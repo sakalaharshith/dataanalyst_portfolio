@@ -1,0 +1,301 @@
+{% extends 'website/index.html' %}
+
+{% block content %}
+<!--Introduction-->
+<div class="content-box p-4 m-3">
+  <h1 class="display-6">Greetings, Earthlings! 🖖 I’m Harshith Sakala Santhosh!</h1>
+  <p id="home" >
+    If data were a galaxy, I’d be its Han Solo—navigating through the asteroid fields of information with a cheeky grin and a blaster at my side. Just like Tony Stark in his lab, I tinker with datasets to craft solutions that are as brilliant as an Iron Man suit, only less likely to explode on re-entry. 
+  <h2>Introduction:</h2>
+  <p>
+    A Data Analyst with a proven track record, I hold a Master of Science in Applied Data Science from the University of Central Lancashire, where I honed my skills in predictive modeling and data visualization. My professional journey at Aveit Solutions has been marked by significant achievements, including the enhancement of data processing efficiencies by 30% through optimized SQL queries and advanced statistical analyses. This feat not only accelerated operational workflows but also fortified business decision-making processes.
+  </p>
+  <p>
+    Beyond the confines of traditional data analysis, I apply my expertise to develop innovative solutions that are as precise and functional as any device out of Tony Stark’s lab. My academic accolades include being named the <b>Best Student in the Data Science Module</b>, a testament to my analytical prowess and dedication to the field. When I am not immersed in data, I enjoy exploring and sightseeing new places, learn about new cultures and watching sci-fi movies—fueling my passion for science fiction and its application to real-world scenarios.
+
+  </p>
+ <!--Education Section-->
+  <div class="education-section">
+    <h2>Education:</h2>
+    <div class="image-container">
+      <img src="/media/images/fhAwk4DnqNgw8_1XC59v2.webp" alt="Nerdy Education GIF" class="img-fluid img-thumbnail">
+    </div>
+    <br>
+    
+    
+    
+    <!--Displaying education section dynamically and fetching data from database-->
+    <div class="row" id="education">
+      <div class="col mx-auto">
+          <!-- Education Section is fetched and populated from database -->
+          <div class="education-section">
+            {% for ed in education %} 
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ ed.0.UniversityName }}</h4>
+                        <p class="card-subtitle mb-2 text-muted"><strong>{{ ed.0.CourseName }}</strong> - {{ ed.0.ResultDate }}</p>
+                        <ul class="mb-2">
+                          {% for content in ed.1 %}
+                            <li>{{ content|safe }}</li>
+                          {% endfor %}
+                        </ul>
+                 </div>
+                </div>
+                {% endfor %}
+
+              
+              
+
+          </div>
+      </div>
+    </div>
+    
+</div>
+<!-- Work Experience Section-->
+<h2>Work Experience:</h2>
+<div class="image-container" id="work-experience">
+  <img src="/media/images/work-image_54woc6d.webp" alt="Nerdy Education GIF" class="img-fluid img-thumbnail">
+</div>
+<br>
+<div class="container">
+  <div class="row">
+      <div class="col mx-auto">
+          <!-- Work Experience is fetched and populated from database -->
+          <div class="work-experience">
+               {% for work in work_experience %}
+                <div class="card shadow-sm workexp mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ work.0.CompanyName }}</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ work.0.JobDate }}</h6>
+                        <ul class="mb-2">
+                          {% for resp in work.1 %}
+                          <li>{{ resp|safe }}</li>
+                          {% endfor %}
+                        </ul>
+                        <p class="card-text" style="color:black;"><strong>Technologies used:</strong> {{ work.0.TechnologiesUsed|safe }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+
+              
+              
+
+          </div>
+      </div>
+  </div>
+</div>
+
+<!--Projects Section -->
+<h2>Projects:</h2>
+<div class="container" id="projects">
+  <div class="row" style="display: flex;
+    flex-wrap: wrap;">
+    
+    {% for project in Projects %}
+    <div class="col-lg-4 mt-2">
+      <div class="card bg-dark" style="height:400px; overflow-y:scroll;">
+        <img src="/media/{{ project.0 }}" class="card-img-top" alt="..." style="height:200px; object-fit:fill;">
+        <h5 class="card-title" style="color:White;">{{ project.1 }}</h5>
+        <div class="card-body py-0">
+          <p class="card-text" style="font-style: normal;" >{{ project.2|safe }}</p>
+          <p class="card-text">{{ project.3 }}</p> 
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!--Articles, Certification and Accomplishments Section-->
+<h2>Articles, Certifications and Accomplishments:</h2>
+<div class="container articles-section" id="articles" >
+  <div class="row" >
+    {% for article in articles %}
+    <div class="col-lg-4">
+      <div class="card articles" id='fireworks-card' style="border:none">
+        <a href="{{ article.link }}"> <img src="/media/{{ article.image }}" class="card-img-top" alt="..." style="height:30vh;"></a>
+          <div class="card-body" style="vertical-align: middle;">
+           <a href="{{ article.link }}"><h5 class="card-title" style="color:white;">{{ article.title }}</h5></a>
+          </div>
+      </div>
+  </div>
+  {% endfor %}
+
+  <!--Chatbot Section-->
+  <div id="chatbot">
+    <div id="chatbot-header" style="color:white;font-style:italic; display: flex; align-items: center;">
+      <strong style="flex: 1; text-align: center; margin-right:50%;" class="bot-name">SAKBOT</strong>
+      <button id="chatbot-button" class="button-close" style="display: block;"  onclick="toggleChatbot()">Close</button>
+    </div>
+    <div id="chatbot-body">
+      <div id="chat-messages">
+        <div class="bot-message" class="intro-bot">Hello! I'm Sakbot, your personal chatbot to help you learn more about me. Ask me anything!</div>
+      </div>
+      <div style="display:flex; width:100%;">
+        <input type="text" id="chat-input" placeholder="Ask me something..." onkeypress="if(event.keyCode==13) sendMessage()" autocomplete="off"/>
+        <button onclick="sendMessage()" style="flex:4;">Send</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // ... chatbot code ...
+
+    // Function to toggle chatbot
+    function toggleChatbot() {
+      var chatbot = document.getElementById('chatbot');
+      var chatbotBody = document.getElementById('chatbot-body');
+      var chatbotButton = document.getElementById('chatbot-button');
+      var bot_name=document.getElementsByClassName('bot-name');
+      
+      if(chatbotBody.style.display === '' || chatbotBody.style.display === 'block') {
+        chatbotBody.style.display = "none";
+        chatbot.style.height = '5%';
+        chatbotButton.innerHTML = '<strong>Open</strong>';
+        chatbotButton.classList.remove('button-close');
+        chatbotButton.classList.add('button-open');
+        if(window.innerWidth < 768) {
+          chatbot.style.width = '50%';
+        } else {
+          chatbot.style.width = '20%';
+        }
+      } else {
+        chatbotBody.style.display = "block";
+        chatbot.style.height = '60%';
+        chatbotButton.innerHTML = '<strong>Close</strong>';
+        chatbotButton.classList.remove('button-open');
+        chatbotButton.classList.add('button-close');
+        chatbot.style.width = window.innerWidth < 768 ? '100%' : '30%';
+      }
+    }
+   </script>
+  <!-- 
+    This script handles the chat functionality on the home page.
+
+    Functions:
+    1. showLoadingAnimation:
+       - Creates and displays a loading animation in the chat messages area.
+       - Returns the loading animation element for later removal.
+
+    2. removeLoadingAnimation:
+       - Removes the loading animation element from the chat messages area.
+
+    3. sendMessage:
+       - Retrieves the user's input message from the chat input field.
+       - If the message is not empty, it appends the user's message to the chat messages area.
+       - Displays a loading animation while waiting for the backend response.
+       - Sends the user's message to the backend using a POST request to '/get_chatbot_response/'.
+       - On receiving the response, removes the loading animation and appends the bot's response to the chat messages area.
+       - Clears the input field after sending the message.
+  -->
+  <script>
+    function showLoadingAnimation() {
+      var chatMessages = document.getElementById('chat-messages');
+      var loadingDiv = document.createElement('div');
+      loadingDiv.className = 'loading-message';
+      loadingDiv.innerHTML = 'Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>';
+      chatMessages.appendChild(loadingDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the latest message
+      return loadingDiv;
+    }
+
+    function removeLoadingAnimation(loadingDiv) {
+      loadingDiv.remove();
+    }
+
+    function sendMessage() {
+      var input = document.getElementById('chat-input');
+      var message = input.value.trim();
+      if (message !== "") {
+        var chatMessages = document.getElementById('chat-messages');
+        var userMsgDiv = document.createElement('div');
+        userMsgDiv.textContent = message;
+        userMsgDiv.className = 'user-message'; 
+        userMsgDiv.style.marginBottom='2%';
+        userMsgDiv.style.marginTop='2%';
+        userMsgDiv.style.width='50%';
+        chatMessages.appendChild(userMsgDiv);
+
+        var loadingDiv = showLoadingAnimation();
+
+        // Call to backend to get response
+        fetch('/get_chatbot_response/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: message })
+        }).then(response => response.json())
+        .then(data => {
+          removeLoadingAnimation(loadingDiv);
+          var botMsgDiv = document.createElement('div');
+          botMsgDiv.textContent = data.response;
+          botMsgDiv.className = 'bot-message'; 
+          botMsgDiv.style.width='70%';
+          chatMessages.appendChild(botMsgDiv);
+          chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the latest message
+        });
+
+        input.value = ''; // Clear input after sending message
+      }
+    }
+  </script>
+
+  <style>
+    .loading-message {
+      color: gray;
+      font-style: italic;
+    }
+    .dot {
+      animation: blink 1s infinite;
+    }
+    .dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    @keyframes blink {
+      0%, 20% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  </style>
+
+
+<!--Confetti Animation-->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.articles-section .card.articles').forEach(function(area){
+        area.addEventListener('mouseenter', function() {
+            confetti({
+                particleCount: 150,
+                spread: 180,
+                origin: { y: 0.5, x: 0.6 } // Centered at the top of the card
+            });
+        });
+    });
+});
+</script>
+
+
+<!--Smooth Scrolling-->
+<script>
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+              behavior: 'smooth'
+          });
+      });
+  });
+</script>
+</div>
+</div>
+{% endblock content %}
