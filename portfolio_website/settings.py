@@ -139,8 +139,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AWS_STORAGE_BUCKET_NAME = 'my-django-portfolio-bucket'
 AWS_S3_REGION_NAME = 'eu-west-2'  # or your chosen region
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', '')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', '')
+
 
 # If you want to serve both static and media from S3:
 # STATIC
