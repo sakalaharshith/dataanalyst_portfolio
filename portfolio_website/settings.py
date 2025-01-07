@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os 
+from storages.backends.s3boto3 import S3Boto3Storage
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +28,7 @@ SECRET_KEY = 'django-insecure-f!kkx2s0%+^y4p6p39_xb6jfo-&8&p1ennc%vmx$0c+z_d50x)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['harshithsakalaportfolio.eu-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['harshithsakalaportfolio.eu-west-2.elasticbeanstalk.com' ,'*']
 
 
 # Application definition
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'website.apps.WebsiteConfig',
     'storages', 
+    
 ]
 
 MIDDLEWARE = [
@@ -118,6 +122,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+class StaticStorage(S3Boto3Storage):
+    location = "static"
+
+class MediaStorage(S3Boto3Storage):
+    location = "media"
+
 
 # Creating static directory and static URL
 STATIC_URL = '/static/'
@@ -128,19 +138,19 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AWS_STORAGE_BUCKET_NAME = 'my-django-portfolio-bucket'
-AWS_S3_REGION_NAME = 'Europe (London) eu-west-2'  # or your chosen region
+AWS_S3_REGION_NAME = 'eu-west-2'  # or your chosen region
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', '')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', '')
 
 # If you want to serve both static and media from S3:
 # STATIC
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/"
+STATICFILES_STORAGE = 'my_app.storage_backends.StaticStorage'
+DEFAULT_FILE_STORAGE = 'my_app.storage_backends.MediaStorage'
+STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
 
 # MEDIA
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/"
 
+MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"
 
 
 # Default primary key field type
