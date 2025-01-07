@@ -10,4 +10,4 @@ sqlparse==0.5.3
 tzdata==2024.2
 urllib3==2.3.0
 gunicorn
-pyscopg2-binary
+psycopg2-binary
