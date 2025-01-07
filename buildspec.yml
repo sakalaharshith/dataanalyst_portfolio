@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "Installing dependencies..."
+      - pip install -r requirements.txt  # or 'pipenv install --system --deploy'
+  pre_build:
+    commands:
+      - echo "Running tests (optional)..."
+      - python manage.py test
+  build:
+    commands:
+      - echo "Collecting static files..."
+      - python manage.py collectstatic --noinput
+  post_build:
+    commands:
+      - echo "Build phase completed."
+
+artifacts:
+  files:
+    - '**/*'  # This includes all files in your project
+    - '.ebextensions/**/*'
+    - 'requirements.txt'
+  discard-paths: no
