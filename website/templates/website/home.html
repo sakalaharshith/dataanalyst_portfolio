@@ -113,7 +113,7 @@
     {% for article in articles %}
     <div class="col-lg-4">
       <div class="card articles" id='fireworks-card' style="border:none">
-        <a href="{{ article.link }}"> <img src="/media/{{ article.image.url }}" class="card-img-top" alt="..." style="height:30vh;"></a>
+        <a href="{{ article.link }}"> <img src="{{ article.image.url }}" class="card-img-top" alt="..." style="height:30vh;"></a>
           <div class="card-body" style="vertical-align: middle;">
            <a href="{{ article.link }}"><h5 class="card-title" style="color:white;">{{ article.title }}</h5></a>
           </div>
