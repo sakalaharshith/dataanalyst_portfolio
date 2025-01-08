@@ -27,7 +27,7 @@ lpu_array=[ed_lpu,content_lpu]
 uclan_array=[ed_Uclan,content_Uclan]
 
 #Fetching work experience from database
-dataanalyst_experience=WorkExperience.objects.filter(CompanyName='Data Analyst at Aveit Solutions Pvt Ltd').first()
+dataanalyst_experience=WorkExperience.objects.filter(CompanyName='Data Science Intern at Data Glacier').first()
 freelance_experience=WorkExperience.objects.filter(CompanyName='Freelance Web Developer at KrishChem Fertilisers').first()
 content_dataanalyst=dataanalyst_experience.JobResponsibilities.split(';')
 content_freelance=freelance_experience.JobResponsibilities.split(';')
