@@ -30,3 +30,4 @@ def run_flow(message: str) -> dict:
 
 results=run_flow('tell me about harshith')['outputs'][0]['outputs'][0]['results']['message']['text']
 print(results)
+print(APPLICATION_TOKEN)
