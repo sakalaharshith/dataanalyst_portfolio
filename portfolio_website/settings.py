@@ -14,6 +14,9 @@ from pathlib import Path
 import os 
 from storages.backends.s3boto3 import S3Boto3Storage
 from dotenv import load_dotenv
+import boto3
+
+
 # Loading environment variables to access the application token
 load_dotenv()
 
@@ -28,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-f!kkx2s0%+^y4p6p39_xb6jfo-&8&p1ennc%vmx$0c+z_d50x)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['harshithsakalaportfolio.eu-west-2.elasticbeanstalk.com' ,'*']
 
@@ -124,21 +127,32 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-class StaticStorage(S3Boto3Storage):
-    location = "static"
 
-class MediaStorage(S3Boto3Storage):
-    location = "media"
+AWS_STORAGE_BUCKET_NAME = 'harshith-portfolio-storage'
+AWS_S3_REGION_NAME = 'eu-west-2'  # or your chosen region
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID') 
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+print(f"AWS_ACCESS_KEY_ID: {AWS_ACCESS_KEY_ID}")
+print(f"AWS_SECRET_ACCESS_KEY: {AWS_SECRET_ACCESS_KEY}")
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_FILE_OVERWRITE = False
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 # Creating static directory and static URL
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
 STATIC_ROOT=os.path.join(BASE_DIR,'static')
 
 # Creating media directory and media url
-MEDIA_URL = '/media/'
+#MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+
+# Use S3 for storing media files
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/images/'
 
 
 
@@ -147,12 +161,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AWS_STORAGE_BUCKET_NAME = 'harshith-portfolio-storage'
-AWS_S3_REGION_NAME = 'eu-west-2'  # or your chosen region
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID') 
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-AWS_S3_FILE_OVERWRITE = False
 
 STORAGES={
 
@@ -172,7 +180,7 @@ STORAGES={
 # If you want to serve both static and media from S3:
 # STATIC
 #STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
-#DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
+
 #STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
 
 # MEDIA
